@@ -1,49 +1,25 @@
 object T6 {
   val alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+  val encryption = (c:Char, shift:Int, x:String) => x((x.indexOf(c.toUpper)+shift)%x.size)
+
+  val decryption = (c:Char, shift:Int, x:String) => x((x.indexOf(c.toUpper)-shift)%x.size)
+
+  val cipher = (algo:(Char, Int, String) => Char, s:String, shift:Int, x:String) => s.map(algo(_,shift,x))
+
+
   def main(args: Array[String]): Unit = {
 
-    val shift = (scala.io.StdIn.readLine("Shift By: ").toInt + alphabet.size) % alphabet.size
     val inputText = scala.io.StdIn.readLine("Secret Message: ")
 
-    val enc = encryption(inputText, shift)
+    val enc = cipher(encryption,inputText,3,alphabet)
     println("Encrypted message = " + enc)
 
-    val  dec = decryption(enc, shift)
+    val  dec = cipher(decryption,enc,3,alphabet)
     println("Decrypted message = " + dec)
 
   }
 
-  def encryption(text : String, shift : Int): String = {
-    val outputText = text.map( (c: Char) => {
 
-      val x = alphabet.indexOf(c.toUpper)
-      if (x == -1){
-        c
-      }
-      else{
-        alphabet((x + shift) % alphabet.size)
-      }
-    });
-
-    return outputText
-
-  }
-
-  def decryption(text : String, shift : Int): String = {
-    val outputText = text.map( (c: Char) => {
-
-      val x = alphabet.indexOf(c.toUpper)
-      if (x == -1){
-        c
-      }
-      else{
-        alphabet((x - shift) % alphabet.size)
-      }
-    });
-
-    return outputText
-
-  }
 
 }
